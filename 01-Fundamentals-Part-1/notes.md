@@ -31,4 +31,30 @@
 
 12. typeof undefined will return undefined.
 
-13. typeof null will return object. 
+13. typeof null will return object.
+
+14. Using const a inital value is required, we just can't declare only the variable name, a value is must.
+
+15. Try to use const for variables that will not change in future and let for variables that can change at any point of time.
+
+16. var is function scope, let is block scope.
+
+17. '+' operator is used for concatenating strings and for adding numbers as well.
+
+18. When we use + operator, it will convert the operands to string if one of the operand is a number and the other is a string.
+
+19. Not always try to log the result, store them in a variable.
+
+20. In if-else statement, else block is optional. Even if don't write it the code will move to the next line.
+
+21. When we have number input field, the numbers which we receive from the user are strings. So we need to convert them to numbers before we can perform any mathematical operation.
+
+22. NaN stands for Not a Number. Invalid number but it still a number somehow.
+
+23. typeof NaN will return 'number'.
+
+24. Whenever there is an operation between a string and a number, the number will be converted to string automatically i.e coercion.
+
+25. '+' operator will convert numbers into string, but in '-' case it will convert string into number exactly the opposite of '+' operator.
+
+26. In Loose equality operator, type coercion is done automatically.
