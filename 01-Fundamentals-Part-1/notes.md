@@ -58,3 +58,15 @@
 25. '+' operator will convert numbers into string, but in '-' case it will convert string into number exactly the opposite of '+' operator.
 
 26. In Loose equality operator, type coercion is done automatically.
+
+27. In Template literal we can only insert expressions, not the statements.
+
+28. As ternary operator is an expression, it will return a value i.e we can store it in a varaible. Example: const x = age >= 18 ? console.log(`You are an Adult`) : console.log(`You are Child`);
+
+29. As ternary operator is an expression, we can use it in template literal.
+
+30. JavaScript Releases -
+    a. JavaScript is a programming language that was first released in 1995.
+    b. It was created by Brendan Eich at Netscape Communications Corporation.
+    c. It is an open-source language.
+    d.JavaScript backwards compatibility : Don't break the Web - Old feature are never removed from the language. Not really new versions, just incremental updates (releases). Website keep wroking forver!
