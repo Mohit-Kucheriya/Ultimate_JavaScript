@@ -15,3 +15,9 @@
 8. In JavaScript, when a number is combined with a string (such as in a template literal or with the + operator for concatenation), JavaScript implicitly converts the number to a string
 
 9. The difference between a function declaration and a function expression is that we can actually call function declarations before they are defined in the code.
+
+10. In arrow functions, we don't have to write the keyword 'function' before the function name and if we have single parameter, we can omit the parenthesis.
+
+11. In arrow functions, we can omit the curly braces and the return keyword if the function body consists of a single expression, simply called implicit return.
+
+12. 
