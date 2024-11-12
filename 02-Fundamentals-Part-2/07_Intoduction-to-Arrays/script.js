@@ -2,23 +2,23 @@
 
 1. Array - An array is a data structure that stores multiple values in a single variable. It is a collection of values that are ordered and indexed. Arrays are zero-indexed, which means that the first element in the array has an index of 0, the second element has an index of 1, and so on.
 
-a. Arrays are used to store a collection of values, such as a list of names, a list of numbers, or a list of objects. Instead of using a single variable to store all the values, an array allows you to store multiple values in a single variable.
+Arrays are used to store a collection of values, such as a list of names, a list of numbers, or a list of objects. Instead of using a single variable to store all the values, an array allows you to store multiple values in a single variable.
 
-b. Syntax - let arr = [];
+Syntax - let arr = [];
 
 2. Another way to create an array is by using the Array() constructor function.
 
-a. Syntax - let arr = new Array();
+Syntax - let arr = new Array();
 
 3. Accessing an element in an array - arr[index];
 
 4. To know the length of an array, we can use the length property.
 
-a. Syntax - arr.length;
+Syntax - arr.length;
 
 5. To access the last element in an array simply use the length property - substract 1 from the length.
 
-a. Syntax - arr[arr.length - 1];
+Syntax - arr[arr.length - 1];
 
 6. To add an element to an array, we can use arr[index] = value;
 
