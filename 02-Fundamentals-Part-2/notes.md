@@ -20,4 +20,14 @@
 
 11. In arrow functions, we can omit the curly braces and the return keyword if the function body consists of a single expression, simply called implicit return.
 
-12. 
+12. When we return anything from a function, after returning, it get's exists immediately i.e. the function will not get executes anymore.
+
+13. Two more important data strutures in JavaScript are Array and Object.
+
+14. Array can hold multiple values and of different types.
+
+15. In Array brackets, we can put any expression i.e anything that can be evaluated to a value.
+
+16. We can actually mutate the array by changing the values of the elements even though they are declared with const, but we simply can't replace the entire array with a new array.
+
+
