@@ -41,3 +41,5 @@ const mohitObject = {
     age: 2024 - 2001,
     friends: ["Harry", "Ron", "Hermoine"],
 };
+
+console.log(mohitObject);
