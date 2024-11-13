@@ -30,4 +30,17 @@
 
 16. We can actually mutate the array by changing the values of the elements even though they are declared with const, but we simply can't replace the entire array with a new array.
 
+17. Difference between Array and Object, is that in Objects, the order of the values doesn't matter, but in Array, the order matters, when we want to retrieve them.
+
+18. Arrays for more order data, and Objects for more un-structured data.
+
+19. Undefined is what we get, when we try to access a property of an object that doesn't exist.
+
+20. JS gives us access to a special variable called this, which refers to the object itself.
+
+21. 'this' keyword is used to refer to the object that is calling the function or method.
+ 
+22. Arrays are actually also objects, they are just a special kind0 of object and so they have functions, or in other words, they have methods that we can use to manipulate them like push, pop, shift, unshift, splice, etc.
+
+23. While-loop is more versatile than for-loop, because it can be used to execute a block of code as long as a condition is true. But all the while-loop really needs is the condition, which needs to stay true it to keep running. And that condition can be any condition, it doesn't have to be any counter at all.
 
