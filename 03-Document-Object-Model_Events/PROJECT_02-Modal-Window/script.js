@@ -1,4 +1,5 @@
 "use strict";
+
 // Step 1: Select DOM elements
 const showModalButtons = document.querySelectorAll(".show-modal");
 const modal = document.querySelector(".modal");
