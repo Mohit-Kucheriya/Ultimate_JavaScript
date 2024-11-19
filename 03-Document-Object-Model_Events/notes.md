@@ -28,4 +28,14 @@ DOM - Document Object Model
 
 14. EventListener - An event listener is a function that is executed when an event is triggered.
 
-15. We don't need to call the function directly, it's the JavaScript engine who call this function as soon as the event happens. 
+15. We don't need to call the function directly, it's the JavaScript engine who call this function as soon as the event happens.
+
+16. querySelector - Selects the first element that matches the specified selector even if there are more than one only the first one is returned.
+
+17. querySelectorAll - Selects all elements that match the specified selector and returns a NodeList which is an array-like object.
+
+18. Three types of key events: keydown, keyup, and keypress.
+
+19. Whenever an listener is added, JavaScript does in fact generate an object and that object contains all the information about the event, including the key that was pressed. Simply called the event object.
+
+20. We can access that object by using the event parameter in the function that we pass to addEventListener.
