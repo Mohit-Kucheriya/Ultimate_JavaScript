@@ -42,5 +42,6 @@
  
 22. Arrays are actually also objects, they are just a special kind0 of object and so they have functions, or in other words, they have methods that we can use to manipulate them like push, pop, shift, unshift, splice, etc.
 
-23. While-loop is more versatile than for-loop, because it can be used to execute a block of code as long as a condition is true. But all the while-loop really needs is the condition, which needs to stay true it to keep running. And that condition can be any condition, it doesn't have to be any counter at all.
+23. While-loop is more versatile than for-loop, because it can be used to execute a block of code as long as a condition is true. But all the while-loop really needs is the condition, which needs to stay true it to keep running. 
+And that condition can be any condition, it doesn't have to be any counter at all.
 
