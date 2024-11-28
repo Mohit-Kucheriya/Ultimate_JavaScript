@@ -202,3 +202,4 @@ const calcAverage1 = function (arr) {
 };
 console.log(`TotalAverage:`, calcAverage1(bills1));
 console.log(`TipsAverage:`, calcAverage1(tips1));
+
