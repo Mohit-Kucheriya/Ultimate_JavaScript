@@ -7,7 +7,8 @@
 3. trim() - Removes whitespace from both sides of the string.
 
 4. replace() - Replaces the first occurrences of a specified value with a new one, takes
-two arguments, the first is the value to be replaced and the second is the new value.
+two arguments, the first is the value to be replaced and the second is the new value and returns 
+the modified string.
 
 5. replaceAll() - Replaces all occurrences of a specified value with a new one. 
 
