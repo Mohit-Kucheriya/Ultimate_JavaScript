@@ -1,5 +1,5 @@
 const modifyString = function (str) {
-    const [first, ...otherWord] = str.split(" ");
+    const [first, ...otherWord] = str.split(/\s+/);
     const modified = otherWord.map((word) =>
         word.replace(word[0], word[0].toUpperCase())
     );
@@ -12,4 +12,4 @@ const UpdatedString = function (str, fn) {
     console.log(`Updated String: ${fn(str)}`);
 };
 
-UpdatedString("wow! its looking amazing", modifyString);
+UpdatedString("    wow!                   its  looking amazing", modifyString);
