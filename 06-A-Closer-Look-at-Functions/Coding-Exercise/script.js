@@ -52,7 +52,9 @@ const poll = {
 
     registerNewAnswer() {
         const option = Number(
-            prompt(`${this.question} \n${this.options.join("\n")}\n(Write option number)`)
+            prompt(
+                `${this.question} \n${this.options.join("\n")}\n(Write option number)`
+            )
         );
         console.log(option);
 
@@ -65,19 +67,55 @@ const poll = {
         this.displayResults();
         this.displayResults("string");
     },
-    displayResults(type = "array") { // take a string as an input can be either 'array' or 'string' 
+    displayResults(type = "array") {
+        // take a string as an input can be either 'array' or 'string'
         if (type === "array") {
             console.log(this.answers);
         } else if (type === "string") {
             console.log(`Poll results are ${this.answers.join(",")}`);
         }
-    }
-
+    },
 };
 
 document
     .querySelector(".poll")
     .addEventListener("click", poll.registerNewAnswer.bind(poll));
 
-
 poll.displayResults.call({ answers: [1, 2, 3] }, "string");
+
+/*
+
+CHALLENGE #2
+
+This is more of a thinking challenge than a coding challenge �
+Your tasks -
+1. Take the IIFE below and at the end of the function, attach an event listener that 
+changes the color of the selected h1 element ('header') to blue, each time 
+the body element is clicked. Do not select the h1 element again!
+
+2. And now explain to yourself (or someone around you) why this worked! Take all 
+the time you need. Think about when exactly the callback function is executed, 
+and what that means for the variables involved in this example.
+
+*/
+
+(function () {
+    const header = document.querySelector("h1");
+    header.style.color = "red";
+
+    document.querySelector("body").addEventListener("click", function () {
+        header.style.color = "blue";
+    });
+})();
+
+/*
+
+Even though the IIFE is immediately invoked, the execution context is gone, but the callback function
+attached to the event listener is still there. So it remember the variable environment of the execution 
+context of the IIFE, so basically it's birthplace.
+
+OR
+
+The 'header' variable is in the bagpack of the callback function.
+
+*/
