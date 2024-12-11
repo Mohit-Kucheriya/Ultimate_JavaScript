@@ -116,6 +116,6 @@ context of the IIFE, so basically it's birthplace.
 
 OR
 
-The 'header' variable is in the bagpack of the callback function.
+The 'header' variable is in the bagpack of the callback function. 
 
 */
