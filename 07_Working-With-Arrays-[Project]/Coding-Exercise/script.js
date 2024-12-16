@@ -57,21 +57,21 @@ checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
 
 CHALLENGE #2
 
-Let's go back to Julia and Kate's study about dogs. This time, they want to convert 
+Let's go back to Julia and Kate's study about dogs. This time, they want to convert
 dog ages to human ages and calculate the average age of the dogs in their study.
-Your tasks:
+Your tasks -
 
-Create a function 'calcAverageHumanAge', which accepts an arrays of dog's 
+Create a function 'calcAverageHumanAge', which accepts an arrays of dog's
 ages ('ages'), and does the following things in order:
 
-1. Calculate the dog age in human years using the following formula: if the dog is 
-<= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old, 
+1. Calculate the dog age in human years using the following formula: if the dog is
+<= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old,
 humanAge = 16 + dogAge * 4
 
-2. Exclude all dogs that are less than 18 human years old (which is the same as 
+2. Exclude all dogs that are less than 18 human years old (which is the same as
 keeping dogs that are at least 18 years old)
 
-3. Calculate the average human age of all adult dogs (you should already know 
+3. Calculate the average human age of all adult dogs (you should already know
 from other challenges how we calculate averages �)
 
 4. Run the function for both test datasets
@@ -105,7 +105,7 @@ console.log(avg2);
 
 CHALLENGE #3
 
-Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time 
+Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
 as an arrow function, and using chaining!
 
 Test data:
@@ -125,3 +125,119 @@ console.log(avg3);
 
 const avg4 = calcAverageHumanAge2([16, 6, 10, 5, 6, 1, 4]);
 console.log(avg4);
+
+/*
+
+CHALLENGE #4
+
+YOUR TASKS:
+1. Store the the average weight of a "Husky" in a variable "huskyWeight"
+
+2. Find the name of the only breed that likes both "running" and "fetch" ("dogBothActivities" variable)
+
+3. Create an array "allActivities" of all the activities of all the dog breeds
+
+4. Create an array "uniqueActivities" that contains only the unique activities (no activity repetitions). 
+HINT: Use a technique with a special data structure that we studied a few sections ago.
+
+5. Many dog breeds like to swim. What other activities do these dogs like? Store all the OTHER activities 
+these breeds like to do, in a unique array called "swimmingAdjacent".
+
+6. Do all the breeds have an average weight of 10kg or more? Log to the console whether "true" or "false".
+
+7. Are there any breeds that are "active"? "Active" means that the dog has 3 or more activities. 
+Log to the console whether "true" or "false".
+
+BONUS: What's the average weight of the heaviest breed that likes to fetch? HINT: Use the "Math.max" method along with the ... operator.
+
+TEST DATA:
+
+*/
+const breeds = [
+    {
+        breed: "German Shepherd",
+        averageWeight: 32,
+        activities: ["fetch", "swimming"],
+    },
+    {
+        breed: "Dalmatian",
+        averageWeight: 24,
+        activities: ["running", "fetch", "agility"],
+    },
+    {
+        breed: "Labrador",
+        averageWeight: 28,
+        activities: ["swimming", "fetch"],
+    },
+    {
+        breed: "Beagle",
+        averageWeight: 12,
+        activities: ["digging", "fetch"],
+    },
+    {
+        breed: "Husky",
+        averageWeight: 26,
+        activities: ["running", "agility", "swimming"],
+    },
+    {
+        breed: "Bulldog",
+        averageWeight: 36,
+        activities: ["sleeping"],
+    },
+    {
+        breed: "Poodle",
+        averageWeight: 18,
+        activities: ["agility", "fetch"],
+    },
+];
+
+// Task 1
+const huskyWeight = breeds.find(
+    (breed) => breed.breed === "Husky"
+).averageWeight;
+console.log(`The average weight of a Husky is ${huskyWeight}kg`);
+
+// Task 2
+const dogBothActivities = breeds.find(
+    (breed) =>
+        breed.activities.includes("running") && breed.activities.includes("fetch")
+).breed;
+console.log(
+    `The dog that likes both running and fetch is ${dogBothActivities}`
+);
+
+// Task 3
+const allActivities = breeds.map((breed) => breed.activities).flat();
+console.log(allActivities);
+
+const allActivities2 = breeds.flatMap((breed) => breed.activities);
+console.log(`All activities are`, allActivities2);
+
+// Task 4
+const uniqueActivities = [
+    ...new Set(breeds.flatMap((breed) => breed.activities)),
+];
+console.log(`Unique activities are`, uniqueActivities);
+
+// Task 5
+const swimmingAdjacent = [
+    ...new Set(
+        breeds
+            .filter((breed) => breed.activities.includes("swimming"))
+            .flatMap((breed) => breed.activities)
+            .filter((activity) => activity !== "swimming")
+    ),
+];
+console.log(`Swimming adjacent activities are`, swimmingAdjacent);
+
+// Task 6
+const averageWeight = breeds.every((breed) => breed.averageWeight >= 10);
+console.log(`Average weight of all breeds is over 10kg i.e.`, averageWeight);
+
+// Task 7
+const activeBreeds = breeds.some((breed) => breed.activities.length >= 3);
+console.log(activeBreeds);
+
+const heavy = breeds.map((breed) => breed.averageWeight);
+const heaviestBreed = Math.max(...heavy);
+console.log(heaviestBreed);
