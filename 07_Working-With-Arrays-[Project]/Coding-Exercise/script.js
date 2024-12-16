@@ -238,6 +238,12 @@ console.log(`Average weight of all breeds is over 10kg i.e.`, averageWeight);
 const activeBreeds = breeds.some((breed) => breed.activities.length >= 3);
 console.log(activeBreeds);
 
-const heavy = breeds.map((breed) => breed.averageWeight);
-const heaviestBreed = Math.max(...heavy);
+// BONUS
+const fetchWeight = breeds
+    .filter((breed) => breed.activities.includes("fetch"))
+    .map((breed) => breed.averageWeight);
+console.log(fetchWeight);
+
+const heaviestBreed = Math.max(...fetchWeight)
 console.log(heaviestBreed);
+
