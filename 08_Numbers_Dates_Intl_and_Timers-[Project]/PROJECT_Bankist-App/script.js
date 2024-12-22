@@ -4,43 +4,43 @@
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: "Jonas Schmedtmann",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 
   movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2024-12-16T17:01:17.194Z",
+    "2024-12-21T23:36:17.929Z",
+    "2024-12-22T10:51:36.790Z",
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: "EUR",
+  locale: "pt-PT", // de-DE
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: "Jessica Davis",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 
   movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
   ],
-  currency: 'USD',
-  locale: 'en-US',
+  currency: "USD",
+  locale: "en-US",
 };
 
 const accounts = [account1, account2];
@@ -70,24 +70,62 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
+/*
+Just a helper function to format the date.
+*/
+const formatedDate = function (date) {
+  const calDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const dayPasses = calDaysPassed(new Date(), date);
+  if (dayPasses === 0) return "Today";
+  if (dayPasses === 1) return "Yesterday";
+  if (dayPasses <= 7) return `${dayPasses} days ago`;
+  else {
+    const currentDate = `${date.getDate()}`.padStart(2, 0);
+    const currentMonth = `${date.getMonth() + 1}`.padStart(2, 0);
+    const currentYear = date.getFullYear();
+
+    return `${currentDate}/${currentMonth}/${currentYear}`;
+  }
+};
+
 /* 
 To display the movements on UI, it's a best practice to use a function which will take the array 
 of movements and display it in the UI and sort it if required, as we know sort mutates the original array.
 So we need to create a copy of the array and sort it.
 */
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (account, sort = false) {
   containerMovements.innerHTML = "";
 
-  const moves = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const combinedMovementDate = account.movements.map((move, i) => ({
+    movement: move,
+    movementDate: account.movementsDates.at(i),
+  }));
+  console.log(combinedMovementDate);
 
-  moves.forEach(function (move, idx) {
-    const type = move > 0 ? "deposit" : "withdrawal";
+  if (sort) combinedMovementDate.sort((a, b) => a.movement - b.movement);
+
+  combinedMovementDate.forEach(function (obj, idx) {
+    const { movement, movementDate } = obj;
+
+    /*
+    We can use current index to get the date from the array of dates, as map() will iterate over each element and 
+    we have the index of the current element. So we can use the index to get the date from the array of dates.
+    */
+    const date = new Date(movementDate);
+
+    const displayDate = formatedDate(date);
+
+    const type = movement > 0 ? "deposit" : "withdrawal";
 
     const html = `
      <div class="movements__row">
           <div class="movements__type movements__type--${type}">${idx + 1
       } ${type}</div>
-          <div class="movements__value">${move}€</div>
+              <div class="movements__date">${displayDate}</div>
+
+          <div class="movements__value">${movement.toFixed(2)}€</div>
      </div>
     `;
 
@@ -106,7 +144,7 @@ const calculateDisplayBalance = function (account) {
 
   // Create a new property called balance, so we can access it later
   account.balance = balance;
-  labelBalance.textContent = `${balance}€`;
+  labelBalance.textContent = `${balance.toFixed(2)}€`;
 };
 // calculateDisplayBalance(account1.movements);
 
@@ -118,19 +156,19 @@ const calculateDisplaySummary = function (account) {
   const sumIn = account.movements
     .filter((move) => move > 0)
     .reduce((acc, move) => acc + move, 0);
-  labelSumIn.textContent = `${sumIn}€`;
+  labelSumIn.textContent = `${sumIn.toFixed(2)}€`;
 
   const sumOut = account.movements
     .filter((move) => move < 0)
     .reduce((acc, move) => acc + move, 0);
-  labelSumOut.textContent = `${Math.abs(sumOut)}€`;
+  labelSumOut.textContent = `${Math.abs(sumOut).toFixed(2)}€`;
 
   const sumInterest = account.movements
     .filter((move) => move > 0)
     .map((deposit) => (deposit * account.interestRate) / 100)
     .filter((interest) => interest >= 1)
     .reduce((acc, interest) => acc + interest, 0);
-  labelSumInterest.textContent = `${sumInterest}€`;
+  labelSumInterest.textContent = `${sumInterest.toFixed(2)}€`;
 };
 // calculateDisplaySummary(account1.movements);
 
@@ -162,7 +200,7 @@ NOTE - different variable but pointing to the same object in the memory.
 
 const updateUI = function (currentAccount) {
   // Display the movements
-  displayMovements(currentAccount.movements);
+  displayMovements(currentAccount);
 
   // Display the balance
   calculateDisplayBalance(currentAccount);
@@ -190,6 +228,16 @@ btnLogin.addEventListener("click", function (e) {
     labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(" ")[0]
       }!`;
     containerApp.style.opacity = 1;
+
+    // Display the current date and time
+    const now = new Date();
+    const currentDate = `${now.getDate()}`.padStart(2, 0);
+    const currentMonth = `${now.getMonth() + 1}`.padStart(2, 0);
+    const currentYear = now.getFullYear();
+    const currentHour = `${now.getHours()}`.padStart(2, 0);
+    const currentMinute = `${now.getMinutes()}`.padStart(2, 0);
+
+    labelDate.textContent = `${currentDate}/${currentMonth}/${currentYear}, ${currentHour}:${currentMinute}`;
 
     // Clear the input fields and blur them
     inputLoginUsername.value = "";
@@ -236,6 +284,10 @@ btnTransfer.addEventListener("click", function (e) {
     currentAccount.movements.push(-amount);
     transferTo.movements.push(amount);
 
+    // Add transfer date to the array of dates for the current account and transferTo account
+    currentAccount.movementsDates.push(new Date().toISOString());
+    transferTo.movementsDates.push(new Date().toISOString());
+
     // Update the balance, the movements, and the summary i.e. UI
     updateUI(currentAccount);
   }
@@ -257,6 +309,9 @@ btnLoan.addEventListener("click", function (e) {
     currentAccount.movements.some((move) => move >= amount * 0.1)
   ) {
     currentAccount.movements.push(amount);
+
+    // Add loan date to the array of dates for the current account
+    currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update the balance, the movements, and the summary i.e. UI
     updateUI(currentAccount);
@@ -298,7 +353,7 @@ updating the sorted variable.
 let sorted = false;
 btnSort.addEventListener("click", function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
@@ -381,17 +436,34 @@ console.log(sum2);
 
 // Q4. Capitalize the first letter of each title except some exceptions.
 const capitalizeTitle = function (title) {
-  const capitalize = word => word[0].toUpperCase() + word.slice(1);
-
+  const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
   const exceptions = [
-    "a", "an", "but", "with", "or", "nor", "yet", "so", "as", "at",
-    "for", "from", "into", "of", "on", "to", "up", "and",];
+    "a",
+    "an",
+    "but",
+    "with",
+    "or",
+    "nor",
+    "yet",
+    "so",
+    "as",
+    "at",
+    "for",
+    "from",
+    "into",
+    "of",
+    "on",
+    "to",
+    "up",
+    "and",
+  ];
 
   const titleCase = title
     .toLowerCase()
     .split(" ")
-    .map((word) => exceptions.includes(word) ? word : capitalize(word)).join(" ");
+    .map((word) => (exceptions.includes(word) ? word : capitalize(word)))
+    .join(" ");
   return capitalize(titleCase);
 };
 console.log(capitalizeTitle("this is a title"));
