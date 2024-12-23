@@ -109,10 +109,6 @@ const displayMovements = function (account, sort = false) {
   combinedMovementDate.forEach(function (obj, idx) {
     const { movement, movementDate } = obj;
 
-    /*
-    We can use current index to get the date from the array of dates, as map() will iterate over each element and 
-    we have the index of the current element. So we can use the index to get the date from the array of dates.
-    */
     const date = new Date(movementDate);
 
     const displayDate = formatedDate(date);
