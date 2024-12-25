@@ -73,7 +73,7 @@ const inputClosePin = document.querySelector(".form__input--pin");
 /*
 Just a helper function to format the date.
 */
-const formatedDate = function (date) {
+const formatedDate = function (date, locale) {
   const calDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
@@ -82,11 +82,13 @@ const formatedDate = function (date) {
   if (dayPasses === 1) return "Yesterday";
   if (dayPasses <= 7) return `${dayPasses} days ago`;
   else {
-    const currentDate = `${date.getDate()}`.padStart(2, 0);
-    const currentMonth = `${date.getMonth() + 1}`.padStart(2, 0);
-    const currentYear = date.getFullYear();
+    // const currentDate = `${date.getDate()}`.padStart(2, 0);
+    // const currentMonth = `${date.getMonth() + 1}`.padStart(2, 0);
+    // const currentYear = date.getFullYear();
 
-    return `${currentDate}/${currentMonth}/${currentYear}`;
+    // return `${currentDate}/${currentMonth}/${currentYear}`;
+
+    return new Intl.DateTimeFormat(locale).format(date);
   }
 };
 
@@ -111,7 +113,7 @@ const displayMovements = function (account, sort = false) {
 
     const date = new Date(movementDate);
 
-    const displayDate = formatedDate(date);
+    const displayDate = formatedDate(date, account.locale);
 
     const type = movement > 0 ? "deposit" : "withdrawal";
 
@@ -143,6 +145,7 @@ const calculateDisplayBalance = function (account) {
   labelBalance.textContent = `${balance.toFixed(2)}€`;
 };
 // calculateDisplayBalance(account1.movements);
+
 
 /*
 To compute the summary, we will use the same logic as we did for the balance but for both 
@@ -227,23 +230,36 @@ btnLogin.addEventListener("click", function (e) {
 
     // Display the current date and time
     const now = new Date();
-    const currentDate = `${now.getDate()}`.padStart(2, 0);
-    const currentMonth = `${now.getMonth() + 1}`.padStart(2, 0);
-    const currentYear = now.getFullYear();
-    const currentHour = `${now.getHours()}`.padStart(2, 0);
-    const currentMinute = `${now.getMinutes()}`.padStart(2, 0);
+    // const currentDate = `${now.getDate()}`.padStart(2, 0);
+    // const currentMonth = `${now.getMonth() + 1}`.padStart(2, 0);
+    // const currentYear = now.getFullYear();
+    // const currentHour = `${now.getHours()}`.padStart(2, 0);
+    // const currentMinute = `${now.getMinutes()}`.padStart(2, 0);
 
-    labelDate.textContent = `${currentDate}/${currentMonth}/${currentYear}, ${currentHour}:${currentMinute}`;
+    // labelDate.textContent = `${currentDate}/${currentMonth}/${currentYear}, ${currentHour}:${currentMinute}`;
 
-    // Clear the input fields and blur them
-    inputLoginUsername.value = "";
-    inputLoginPin.value = "";
-    inputLoginUsername.blur();
-    inputLoginPin.blur();
+    // Using Intl.DateTimeFormat API
+    const options = {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
 
-    // Update the UI
-    updateUI(currentAccount);
+    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale, options).format(now)
   }
+
+  // Clear the input fields and blur them
+  inputLoginUsername.value = "";
+  inputLoginPin.value = "";
+  inputLoginUsername.blur();
+  inputLoginPin.blur();
+
+  // Update the UI
+  updateUI(currentAccount);
+
 });
 
 /*
