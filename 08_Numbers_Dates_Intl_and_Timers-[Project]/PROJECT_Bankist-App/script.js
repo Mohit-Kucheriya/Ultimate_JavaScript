@@ -82,7 +82,7 @@ const formatedDate = function (date, locale) {
   if (dayPasses === 1) return "Yesterday";
   if (dayPasses <= 7) return `${dayPasses} days ago`;
   else {
-    // const currentDate = `${date.getDate()}`.padStart(2, 0);
+    // const currentDate =  
     // const currentMonth = `${date.getMonth() + 1}`.padStart(2, 0);
     // const currentYear = date.getFullYear();
 
@@ -90,6 +90,14 @@ const formatedDate = function (date, locale) {
 
     return new Intl.DateTimeFormat(locale).format(date);
   }
+};
+
+// Formatting the currency using Intl.NumberFormat(locale, {style: "currency", currency: currency}).format(value);
+const formattCurr = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
 };
 
 /* 
@@ -117,13 +125,19 @@ const displayMovements = function (account, sort = false) {
 
     const type = movement > 0 ? "deposit" : "withdrawal";
 
+    const formattedMov = formattCurr(
+      movement,
+      account.locale,
+      account.currency
+    );
+
     const html = `
      <div class="movements__row">
           <div class="movements__type movements__type--${type}">${idx + 1
       } ${type}</div>
               <div class="movements__date">${displayDate}</div>
 
-          <div class="movements__value">${movement.toFixed(2)}€</div>
+          <div class="movements__value">${formattedMov}</div>
      </div>
     `;
 
@@ -142,10 +156,13 @@ const calculateDisplayBalance = function (account) {
 
   // Create a new property called balance, so we can access it later
   account.balance = balance;
-  labelBalance.textContent = `${balance.toFixed(2)}€`;
+  labelBalance.textContent = formattCurr(
+    balance,
+    account.locale,
+    account.currency
+  );
 };
 // calculateDisplayBalance(account1.movements);
-
 
 /*
 To compute the summary, we will use the same logic as we did for the balance but for both 
@@ -155,19 +172,27 @@ const calculateDisplaySummary = function (account) {
   const sumIn = account.movements
     .filter((move) => move > 0)
     .reduce((acc, move) => acc + move, 0);
-  labelSumIn.textContent = `${sumIn.toFixed(2)}€`;
+  labelSumIn.textContent = formattCurr(sumIn, account.locale, account.currency);
 
   const sumOut = account.movements
     .filter((move) => move < 0)
     .reduce((acc, move) => acc + move, 0);
-  labelSumOut.textContent = `${Math.abs(sumOut).toFixed(2)}€`;
+  labelSumOut.textContent = formattCurr(
+    Math.abs(sumOut),
+    account.locale,
+    account.currency
+  );
 
   const sumInterest = account.movements
     .filter((move) => move > 0)
     .map((deposit) => (deposit * account.interestRate) / 100)
     .filter((interest) => interest >= 1)
     .reduce((acc, interest) => acc + interest, 0);
-  labelSumInterest.textContent = `${sumInterest.toFixed(2)}€`;
+  labelSumInterest.textContent = formattCurr(
+    sumInterest,
+    account.locale,
+    account.currency
+  );
 };
 // calculateDisplaySummary(account1.movements);
 
@@ -208,7 +233,60 @@ const updateUI = function (currentAccount) {
   calculateDisplaySummary(currentAccount);
 };
 
-let currentAccount;
+
+// Logout timer 
+const startLogouttimer = function () {
+  let time = 120;
+
+  /*
+  Here is the catch - The callback funtion for the first time after 1000 milliseconds, and we want to execute the callback function immediately. The trick is to export this into a separate function then call it 
+  immediately and then also start calling it every second using the setInterval() function.
+  */
+
+  // Call the timer function every 1000 milliseconds i.e. 1 second
+  /*
+  let timer = setInterval(() => {
+    let minute = `${Math.trunc(time / 60)}`.padStart(2, 0);
+    let second = `${time % 60}`.padStart(2, 0);
+
+    labelTimer.textContent = `${minute}:${second}`;
+
+    // Decrement the time by 1s
+    time--;
+
+    // If the time is 0, clear the interval and display the logout message
+    if (time === 0) {
+      clearInterval(timer)
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = "Log in to get started";
+    }
+
+  }, 1000);
+  */
+  const tick = function () {
+    let minute = `${Math.trunc(time / 60)}`.padStart(2, 0);
+    let second = `${time % 60}`.padStart(2, 0);
+
+    labelTimer.textContent = `${minute}:${second}`;
+
+    // If the time is 0, clear the interval and display the logout message
+    if (time === 0) {
+      clearInterval(timer)
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = "Log in to get started";
+    }
+
+    // Decrement the time by 1s
+    time--;
+
+  }
+
+  tick() // Call the tick function immediately
+  let timer = setInterval(tick, 1000)
+  return timer
+}
+
+let currentAccount, timer;
 
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
@@ -248,7 +326,10 @@ btnLogin.addEventListener("click", function (e) {
       minute: "numeric",
     };
 
-    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale, options).format(now)
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
   }
 
   // Clear the input fields and blur them
@@ -257,9 +338,12 @@ btnLogin.addEventListener("click", function (e) {
   inputLoginUsername.blur();
   inputLoginPin.blur();
 
+  // Start the logout timer, if the timer is already running, clear it first
+  if (timer) clearInterval(timer)
+  timer = startLogouttimer();
+
   // Update the UI
   updateUI(currentAccount);
-
 });
 
 /*
@@ -302,6 +386,10 @@ btnTransfer.addEventListener("click", function (e) {
 
     // Update the balance, the movements, and the summary i.e. UI
     updateUI(currentAccount);
+
+    // Reset the logout timer
+    clearInterval(timer)
+    timer = startLogouttimer();
   }
 });
 
@@ -320,13 +408,20 @@ btnLoan.addEventListener("click", function (e) {
     amount >= 0 &&
     currentAccount.movements.some((move) => move >= amount * 0.1)
   ) {
-    currentAccount.movements.push(amount);
+    // setTimeout to simulate the delay of 2500ms (2.5 seconds) to show the loan effect
+    setTimeout(() => {
+      currentAccount.movements.push(amount);
 
-    // Add loan date to the array of dates for the current account
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add loan date to the array of dates for the current account
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update the balance, the movements, and the summary i.e. UI
-    updateUI(currentAccount);
+      // Update the balance, the movements, and the summary i.e. UI
+      updateUI(currentAccount);
+
+      // Reset the logout timer
+      clearInterval(timer)
+      timer = startLogouttimer();
+    }, 2500);
   }
   // Clear the input fields and blur them
   inputLoanAmount.value = "";
