@@ -18,7 +18,7 @@ the new speed to the console
 4. Create 2 'Car' objects and experiment with calling 'accelerate' and 
 'brake' multiple times on each of them
 
-Test data:
+Test data
 Data car 1: 'BMW' going at 120 km/h
 Data car 2: 'Mercedes' going at 95 km/h
 
@@ -69,7 +69,7 @@ converts it to km/h before storing the value, by multiplying the input by 1.6)
 4. Create a new car and experiment with the 'accelerate' and 'brake'
 methods, and with the getter and setter.
 
-Test data:
+Test data
 Data car 1: 'Ford' going at 120 km/h
 
 */
@@ -126,7 +126,7 @@ km/h, with a charge of 22%'
 'brake' and 'chargeBattery' (charge to 90%). Notice what happens when 
 you 'accelerate'! Hint: Review the definiton of polymorphism �
 
-Test data:
+Test data
 Data car 1: 'Tesla' going at 120 km/h, with a charge of 23%
 
 */
